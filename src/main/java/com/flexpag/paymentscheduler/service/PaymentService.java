@@ -18,7 +18,7 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
     public Long save(Payment payment) {
-        payment.setStatus(Status.PAID);
+        payment.setStatus(Status.PENDING);
         return paymentRepository.save(payment).getId();
     }
 
