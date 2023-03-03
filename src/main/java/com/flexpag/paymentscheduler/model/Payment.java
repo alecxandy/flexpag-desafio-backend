@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class scheduledPayment implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Payment  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +24,9 @@ public class scheduledPayment implements Serializable {
     @Column(name = "valuepayment")
     private Double paymentValue;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
+  //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
     @Column(name = "datatime")
-    private Instant dataTime;
+    private LocalDateTime dataTime;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
