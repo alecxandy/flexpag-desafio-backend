@@ -6,6 +6,8 @@ import com.flexpag.paymentscheduler.exception.IdentifierNotFoundException;
 import com.flexpag.paymentscheduler.model.Payment;
 import com.flexpag.paymentscheduler.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class PaymentService {
         return paymentRepository.save(payment).getId();
     }
 
-    public List<Payment> findAll() {
-        return paymentRepository.findAll();
+    public Page<Payment> findAll(Pageable pageable) {
+        return paymentRepository.findAll(pageable);
     }
 
     public Status status(Long id) {

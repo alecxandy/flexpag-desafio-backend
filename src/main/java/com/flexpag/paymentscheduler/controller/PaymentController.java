@@ -5,6 +5,8 @@ import com.flexpag.paymentscheduler.enums.Status;
 import com.flexpag.paymentscheduler.model.Payment;
 import com.flexpag.paymentscheduler.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Payment>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(paymentService.findAll());
+    public ResponseEntity<Page<Payment>> findAll(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.findAll(pageable));
     }
 
     @GetMapping("/status/{id}")
