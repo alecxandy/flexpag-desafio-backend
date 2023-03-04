@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,9 +21,11 @@ public class Payment  {
     private Long id;
 
     @Column(name = "valuepayment")
+    @NotNull(message = "You need to fill in all fields")
     private Double paymentValue;
 
     @Column(name = "datatime")
+    @NotNull(message = "You need to fill in all fields")
     private LocalDateTime dataTime;
 
     @Enumerated(EnumType.ORDINAL)

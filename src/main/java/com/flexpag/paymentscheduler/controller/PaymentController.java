@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<Long> save(@RequestBody Payment payment) {
+    public ResponseEntity<Long> save(@Valid @RequestBody Payment payment) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.save(payment));
     }
 
@@ -44,7 +45,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody Payment payment) {
+    public Long update(@PathVariable Long id, @Valid @RequestBody Payment payment) {
         return paymentService.update(id, payment);
     }
 
