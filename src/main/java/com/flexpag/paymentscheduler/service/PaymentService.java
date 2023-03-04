@@ -1,15 +1,14 @@
 package com.flexpag.paymentscheduler.service;
 
-
 import com.flexpag.paymentscheduler.enums.Status;
 import com.flexpag.paymentscheduler.exception.FinishedPaymentException;
+import com.flexpag.paymentscheduler.exception.IdentifierNotFoundException;
 import com.flexpag.paymentscheduler.model.Payment;
 import com.flexpag.paymentscheduler.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -22,29 +21,45 @@ public class PaymentService {
         return paymentRepository.save(payment).getId();
     }
 
-    public Status status(Long id) {
-        return paymentRepository.findById(id).get().getStatus();
-    }
-
     public List<Payment> findAll() {
         return paymentRepository.findAll();
     }
 
-    public Optional<Payment> findById(Long id) {
-        return paymentRepository.findById(id);
+    public Status status(Long id) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new IdentifierNotFoundException("Identifier does not exist"));
+        return payment.getStatus();
+    }
+
+    public Payment findById(Long id) {
+        return paymentRepository.findById(id)
+                .orElseThrow(() -> new IdentifierNotFoundException("Identifier does not exist"));
     }
 
     //Excluir apenas se o status for pendente
     public void deleteById(Long id) {
-        paymentRepository.findById(id).map(payment -> {
-            if (payment.getStatus().equals(Status.PENDING)) {
+        paymentRepository.findById(id).map(p -> {
+            if (p.getStatus().equals(Status.PENDING)) {
                 paymentRepository.deleteById(id);
             } else {
                 throw new FinishedPaymentException("This payment has already been finalized and cannot be deleted");
             }
-            return payment;
-        });
+            return p;
+        }).orElseThrow(() -> new IdentifierNotFoundException("Identifier does not exist"));
     }
 
+    //Atualizar apenas se o status for pendente
+    public Long update(Long id, Payment payment) {
+        return paymentRepository.findById(id).map(p -> {
+            if (p.getStatus().equals(Status.PENDING)) {
+                p.setId(id);
+                p.setPaymentValue(payment.getPaymentValue());
+                p.setStatus(Status.PENDING);
+                p.setDataTime(payment.getDataTime());
+                paymentRepository.save(p);
+            }
+            return p.getId();
+        }).orElseThrow(() -> new IdentifierNotFoundException("Identifier does not exist"));
+    }
 
 }
