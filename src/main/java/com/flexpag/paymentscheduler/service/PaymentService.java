@@ -57,6 +57,8 @@ public class PaymentService {
                 p.setStatus(Status.PENDING);
                 p.setDataTime(payment.getDataTime());
                 paymentRepository.save(p);
+            } else {
+                throw new FinishedPaymentException("This payment has already been finalized and cannot be deleted");
             }
             return p.getId();
         }).orElseThrow(() -> new IdentifierNotFoundException("Identifier does not exist"));
