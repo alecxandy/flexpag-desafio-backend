@@ -1,8 +1,9 @@
 package com.flexpag.paymentscheduler.controller;
 
 
+import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
-import com.flexpag.paymentscheduler.model.Payment;
+import com.flexpag.paymentscheduler.entity.Payment;
 import com.flexpag.paymentscheduler.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import javax.validation.Valid;
 
 @RestController
@@ -48,6 +50,12 @@ public class PaymentController {
     @PutMapping("/{id}")
     public Long update(@PathVariable Long id, @Valid @RequestBody Payment payment) {
         return paymentService.update(id, payment);
+    }
+
+    //Extrato de pagamentos
+    @GetMapping("/paymentStatement")
+    public ResponseEntity<List<Payment>> paymentStatement(@Valid @RequestBody PaymentStatementDTO paymentStatementDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.paymentStatement(paymentStatementDTO));
     }
 
 }

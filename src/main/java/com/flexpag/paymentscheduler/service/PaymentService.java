@@ -1,14 +1,20 @@
 package com.flexpag.paymentscheduler.service;
 
+import com.flexpag.paymentscheduler.entity.Payment;
+import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
 import com.flexpag.paymentscheduler.exception.FinishedPaymentException;
 import com.flexpag.paymentscheduler.exception.IdentifierNotFoundException;
-import com.flexpag.paymentscheduler.model.Payment;
+import com.flexpag.paymentscheduler.exception.InvalidDateTimeException;
 import com.flexpag.paymentscheduler.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -17,6 +23,9 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
     public Long save(Payment payment) {
+        if (LocalDateTime.now().isAfter(payment.getDataTime())) {
+            throw new InvalidDateTimeException("Date or time cannot be less than the current date");
+        }
         payment.setStatus(Status.PENDING);
         return paymentRepository.save(payment).getId();
     }
@@ -50,6 +59,9 @@ public class PaymentService {
 
     //Atualizar apenas se o status for pendente
     public Long update(Long id, Payment payment) {
+        if (LocalDateTime.now().isAfter(payment.getDataTime())) {
+            throw new InvalidDateTimeException("Date or time cannot be less than the current date");
+        }
         return paymentRepository.findById(id).map(p -> {
             if (p.getStatus().equals(Status.PENDING)) {
                 p.setId(id);
@@ -62,6 +74,13 @@ public class PaymentService {
             }
             return p.getId();
         }).orElseThrow(() -> new IdentifierNotFoundException("Identifier does not exist"));
+    }
+
+   //Extratos
+    public List<Payment> paymentStatement(@RequestBody PaymentStatementDTO paymentStatementDTO) {
+        return paymentRepository.findByDataTimeBetween(
+                paymentStatementDTO.getInitialDate(),
+                paymentStatementDTO.getFinalDate());
     }
 
 }

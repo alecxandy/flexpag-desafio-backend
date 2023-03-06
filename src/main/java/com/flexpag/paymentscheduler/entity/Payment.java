@@ -1,4 +1,4 @@
-package com.flexpag.paymentscheduler.model;
+package com.flexpag.paymentscheduler.entity;
 
 import com.flexpag.paymentscheduler.enums.Status;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
