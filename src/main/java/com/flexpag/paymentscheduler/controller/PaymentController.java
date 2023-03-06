@@ -1,6 +1,5 @@
 package com.flexpag.paymentscheduler.controller;
 
-
 import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
 import com.flexpag.paymentscheduler.entity.Payment;
