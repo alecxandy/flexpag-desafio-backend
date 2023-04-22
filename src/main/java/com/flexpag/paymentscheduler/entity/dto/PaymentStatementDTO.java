@@ -1,11 +1,13 @@
 package com.flexpag.paymentscheduler.entity.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class PaymentStatementDTO {
 
     @NotNull(message = "You need to fill in all fields")

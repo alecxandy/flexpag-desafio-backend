@@ -1,7 +1,9 @@
 package com.flexpag.paymentscheduler.service;
 
 import com.flexpag.paymentscheduler.entity.Payment;
+import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
+import com.flexpag.paymentscheduler.exception.FinishedPaymentException;
 import com.flexpag.paymentscheduler.exception.IdentifierNotFoundException;
 import com.flexpag.paymentscheduler.exception.InvalidDateTimeException;
 import com.flexpag.paymentscheduler.repository.PaymentRepository;
@@ -31,7 +33,7 @@ class PaymentServiceTest {
     Pageable PAGEABLE = PageRequest.of(2, 10);
     Payment PAYMENT = new Payment(1L, 10.00, LocalDateTime.of(2024, Month.APRIL, 23, 14, 0, 0), Status.PENDING);
     Payment PAYMENT_PAID = new Payment(1L, 10.00, LocalDateTime.of(2022, Month.APRIL, 23, 14, 0, 0), Status.PAID);
-
+    PaymentStatementDTO PAYMENTSTATEMANTDTO = new PaymentStatementDTO(LocalDateTime.of(2022, 12, 1, 0, 0), LocalDateTime.of(2023, 12, 1, 0, 0));
     @InjectMocks
     private PaymentService paymentService;
     @Mock
@@ -126,15 +128,50 @@ class PaymentServiceTest {
     }
 
     @Test
-    void notDeleteById(){
+    void whenPaidReturnsExceptionDeleteById() {
+        PAYMENT.setStatus(Status.PAID);
+        when(paymentRepository.findById(Mockito.anyLong()))
+                .thenThrow(new FinishedPaymentException("This payment has already been finalized and cannot be deleted"));
+        try {
+            paymentService.deleteById(Mockito.anyLong());
+        } catch (Exception ex) {
+            assertEquals(ex.getClass(), FinishedPaymentException.class);
+            assertEquals(ex.getMessage(), "This payment has already been finalized and cannot be deleted");
+        }
+    }
 
+    @Test
+    void whenTheIdentifierIsInvalid() {
+        when(paymentRepository.findById(Mockito.anyLong()))
+                .thenThrow(new IdentifierNotFoundException("Identifier does not exist"));
+        try {
+            paymentService.deleteById(Mockito.anyLong());
+        } catch (Exception ex) {
+            assertEquals(IdentifierNotFoundException.class, ex.getClass());
+            assertEquals("Identifier does not exist", ex.getMessage());
+        }
     }
 
     @Test
     void update() {
+        when(paymentRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(PAYMENT));
+        when(paymentRepository.save(PAYMENT)).thenReturn(PAYMENT);
+        Long id = paymentService.update(Mockito.anyLong(), PAYMENT);
+        assertNotNull(id);
+        assertEquals(id, PAYMENT.getId());
     }
+
 
     @Test
     void paymentStatement() {
+        when(paymentRepository.
+                findByDataTimeBetween(PAYMENTSTATEMANTDTO.getInitialDate(), PAYMENTSTATEMANTDTO.getFinalDate()))
+                .thenReturn(List.of(PAYMENT));
+
+        List<Payment> payments = paymentService.paymentStatement(PAYMENTSTATEMANTDTO);
+
+        assertNotNull(payments);
+        assertEquals(payments.size(),1);
+        assertEquals(payments.get(0).getClass(),PAYMENT.getClass());
     }
 }
