@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
@@ -62,6 +63,12 @@ class PaymentControllerTest {
 
     @Test
     void status() {
+        Mockito.when(paymentService.status(1L)).thenReturn(Status.PENDING);
+        ResponseEntity<Status> response = paymentController.status(1L);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(response.getBody(),Status.PENDING);
+        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
     }
 
     @Test
