@@ -49,6 +49,7 @@ class PaymentControllerTest {
         assertNotNull(response);
         assertNotNull(response.getBody());
         assertEquals(response.getBody(), 1L);
+        assertEquals(response.getStatusCodeValue(), HttpStatus.CREATED.value());
     }
 
     @Test
@@ -59,6 +60,7 @@ class PaymentControllerTest {
         assertNotNull(response.getBody());
         assertEquals(response.getBody().getTotalElements(), 0);
         assertEquals(response.getBody().getTotalPages(), 1);
+        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
     }
 
     @Test
@@ -67,12 +69,21 @@ class PaymentControllerTest {
         ResponseEntity<Status> response = paymentController.status(1L);
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertEquals(response.getBody(),Status.PENDING);
+        assertEquals(response.getBody(), Status.PENDING);
         assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
     }
 
     @Test
     void findById() {
+        Mockito.when(paymentService.findById(1L)).thenReturn(PAYMENT);
+        ResponseEntity<Payment> response = paymentController.findById(1L);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(response.getBody().getClass(), Payment.class);
+        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
+        assertEquals(response.getBody().getId(), PAYMENT.getId());
+        assertEquals(response.getBody().getDataTime(), PAYMENT.getDataTime());
+        assertEquals(response.getBody().getStatus(), PAYMENT.getStatus());
     }
 
     @Test
