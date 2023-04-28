@@ -6,6 +6,7 @@ import com.flexpag.paymentscheduler.enums.Status;
 import com.flexpag.paymentscheduler.repository.PaymentRepository;
 import com.flexpag.paymentscheduler.service.PaymentService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +23,9 @@ import java.time.LocalDateTime;
 import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
+
+import java.util.List;
 
 class PaymentControllerTest {
 
@@ -88,13 +92,27 @@ class PaymentControllerTest {
 
     @Test
     void deleteById() {
+        doNothing().when(paymentService).deleteById(1L);
+        paymentController.deleteById(1L);
+        Mockito.verify(paymentService, Mockito.times(1)).deleteById(1L);
     }
 
     @Test
     void update() {
+        Mockito.when(paymentService.update(1L, PAYMENT)).thenReturn(1L);
+        Long response = paymentController.update(1L, PAYMENT);
+        Assertions.assertEquals(response, 1L);
     }
 
     @Test
     void paymentStatement() {
+        Mockito.when(paymentService.paymentStatement(PAYMENTSTATEMANTDTO)).thenReturn(List.of(PAYMENT));
+        ResponseEntity<List<Payment>> response = paymentController.paymentStatement(PAYMENTSTATEMANTDTO);
+        assertNotNull(response);
+        assertEquals(response.getBody().size(), 1);
+        assertEquals(response.getBody().get(0).getId(), PAYMENT.getId());
+        assertEquals(response.getBody().get(0).getPaymentValue(), PAYMENT.getPaymentValue());
+        assertEquals(response.getBody().get(0).getStatus(), PAYMENT.getStatus());
+        assertEquals(response.getBody().get(0).getDataTime(), PAYMENT.getDataTime());
     }
 }

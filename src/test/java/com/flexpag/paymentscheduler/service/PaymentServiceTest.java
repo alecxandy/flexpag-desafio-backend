@@ -167,9 +167,7 @@ class PaymentServiceTest {
         when(paymentRepository.
                 findByDataTimeBetween(PAYMENTSTATEMANTDTO.getInitialDate(), PAYMENTSTATEMANTDTO.getFinalDate()))
                 .thenReturn(List.of(PAYMENT));
-
         List<Payment> payments = paymentService.paymentStatement(PAYMENTSTATEMANTDTO);
-
         assertNotNull(payments);
         assertEquals(payments.size(),1);
         assertEquals(payments.get(0).getClass(),PAYMENT.getClass());
