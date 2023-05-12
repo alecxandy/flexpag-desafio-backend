@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class PaymentServiceTest {
-
     Page<Payment> PAGE = Page.empty();
     Pageable PAGEABLE = PageRequest.of(2, 10);
     Payment PAYMENT = new Payment(1L, 10.00, LocalDateTime.of(2024, Month.APRIL, 23, 14, 0, 0), Status.PENDING);
