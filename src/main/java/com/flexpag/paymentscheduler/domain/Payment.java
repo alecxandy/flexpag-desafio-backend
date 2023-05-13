@@ -1,4 +1,4 @@
-package com.flexpag.paymentscheduler.entity;
+package com.flexpag.paymentscheduler.domain;
 
 import com.flexpag.paymentscheduler.enums.Status;
 import lombok.AllArgsConstructor;

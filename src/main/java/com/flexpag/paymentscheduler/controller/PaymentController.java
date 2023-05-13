@@ -1,8 +1,8 @@
 package com.flexpag.paymentscheduler.controller;
 
-import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
+import com.flexpag.paymentscheduler.domain.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
-import com.flexpag.paymentscheduler.entity.Payment;
+import com.flexpag.paymentscheduler.domain.Payment;
 import com.flexpag.paymentscheduler.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

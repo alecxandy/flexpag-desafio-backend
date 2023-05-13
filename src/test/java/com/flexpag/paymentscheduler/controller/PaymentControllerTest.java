@@ -1,11 +1,9 @@
 package com.flexpag.paymentscheduler.controller;
 
-import com.flexpag.paymentscheduler.entity.Payment;
-import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
+import com.flexpag.paymentscheduler.domain.Payment;
+import com.flexpag.paymentscheduler.domain.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
-import com.flexpag.paymentscheduler.repository.PaymentRepository;
 import com.flexpag.paymentscheduler.service.PaymentService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

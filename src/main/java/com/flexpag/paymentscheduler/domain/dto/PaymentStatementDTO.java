@@ -1,4 +1,4 @@
-package com.flexpag.paymentscheduler.entity.dto;
+package com.flexpag.paymentscheduler.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

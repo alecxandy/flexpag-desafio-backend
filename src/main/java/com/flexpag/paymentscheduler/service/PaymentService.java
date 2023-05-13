@@ -1,7 +1,7 @@
 package com.flexpag.paymentscheduler.service;
 
-import com.flexpag.paymentscheduler.entity.Payment;
-import com.flexpag.paymentscheduler.entity.dto.PaymentStatementDTO;
+import com.flexpag.paymentscheduler.domain.Payment;
+import com.flexpag.paymentscheduler.domain.dto.PaymentStatementDTO;
 import com.flexpag.paymentscheduler.enums.Status;
 import com.flexpag.paymentscheduler.exception.FinishedPaymentException;
 import com.flexpag.paymentscheduler.exception.IdentifierNotFoundException;

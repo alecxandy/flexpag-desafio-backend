@@ -1,7 +1,7 @@
 package com.flexpag.paymentscheduler;
 
 import com.flexpag.paymentscheduler.enums.Status;
-import com.flexpag.paymentscheduler.entity.Payment;
+import com.flexpag.paymentscheduler.domain.Payment;
 import com.flexpag.paymentscheduler.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
