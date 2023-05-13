@@ -9,10 +9,10 @@ import java.util.Optional;
 //class detalhes do usuario
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-    private final Optional<User> optionalUsuario;
+    private final Optional<User> optionalUser;
 
-    public UserDetails(Optional<User> optionalUsuario) {
-        this.optionalUsuario = optionalUsuario;
+    public UserDetails(Optional<User> optionalUser) {
+        this.optionalUser = optionalUser;
     }
 
     @Override //autorização do usuario
@@ -22,12 +22,12 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override //senha
     public String getPassword() {
-        return optionalUsuario.orElse(new User()).getSenha();
+        return optionalUser.orElse(new User()).getPassword();
     }
 
     @Override //usuario
     public String getUsername() {
-        return optionalUsuario.orElse(new User()).getNome();
+        return optionalUser.orElse(new User()).getUserName();
     }
 
     @Override

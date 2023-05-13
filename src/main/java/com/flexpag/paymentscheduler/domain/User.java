@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
-    private String nome;
-    private String senha;
+    private String userName;
+    private String password;
 
 }
