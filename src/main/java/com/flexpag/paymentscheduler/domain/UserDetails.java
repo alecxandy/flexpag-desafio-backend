@@ -1,18 +1,17 @@
 package com.flexpag.paymentscheduler.domain;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
 //class detalhes do usuario
-public class UsuarioDetails implements UserDetails {
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-    private final Optional<Usuario> optionalUsuario;
+    private final Optional<User> optionalUsuario;
 
-    public UsuarioDetails(Optional<Usuario> optionalUsuario) {
+    public UserDetails(Optional<User> optionalUsuario) {
         this.optionalUsuario = optionalUsuario;
     }
 
@@ -23,12 +22,12 @@ public class UsuarioDetails implements UserDetails {
 
     @Override //senha
     public String getPassword() {
-        return optionalUsuario.orElse(new Usuario()).getSenha();
+        return optionalUsuario.orElse(new User()).getSenha();
     }
 
     @Override //usuario
     public String getUsername() {
-        return optionalUsuario.orElse(new Usuario()).getNome();
+        return optionalUsuario.orElse(new User()).getNome();
     }
 
     @Override
